@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Globalization;
 
 namespace Eto.Drawing
@@ -115,6 +116,7 @@ namespace Eto.Drawing
 	/// <copyright>(c) 2014 by Curtis Wensley</copyright>
 	/// <license type="BSD-3">See LICENSE for full terms</license>
 	[Handler(typeof(Font.IHandler))]
+    [TypeConverter(typeof(FontConverter))]
 	public class Font : Widget
 	{
 		new IHandler Handler { get { return (IHandler)base.Handler; } }

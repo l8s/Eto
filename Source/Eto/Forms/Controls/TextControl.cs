@@ -84,6 +84,18 @@ namespace Eto.Forms
 			}
 		}
 
+        /// <summary>
+        /// Clones properties for this control
+        /// </summary>
+        protected override void CloneProperties(Widget widgetToClone)
+        {
+            base.CloneProperties(widgetToClone);
+
+            TextControl control = (TextControl)widgetToClone;
+            Text = control.Text;
+            TextColor = control.TextColor;
+        }
+
 		static readonly object callback = new Callback();
 		/// <summary>
 		/// Gets an instance of an object used to perform callbacks to the widget from handler implementations

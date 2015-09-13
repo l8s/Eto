@@ -21,7 +21,7 @@ namespace Eto.Forms
 		/// The <see cref="ICommand.CanExecute"/> will also used to set the enabled/disabled state of the tool item.
 		/// </remarks>
 		/// <value>The command to invoke.</value>
-		public ICommand Command
+		public virtual ICommand Command
 		{
 			get { return Properties.GetCommand(Command_Key); }
 			set { Properties.SetCommand(Command_Key, value, e => Enabled = e, r => Click += r, r => Click -= r); }

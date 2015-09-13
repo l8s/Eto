@@ -28,6 +28,35 @@ namespace Eto
 		}
 	}
 
+    /// <summary>
+	/// Arguments for when a widget is cloned
+	/// </summary>
+	/// <copyright>(c) 2012-2015 by Curtis Wensley</copyright>
+	/// <license type="BSD-3">See LICENSE for full terms</license>
+	public class WidgetClonedEventArgs : EventArgs
+	{
+		/// <summary>
+		/// Gets the instance of the widget that was created
+		/// </summary>
+		public Widget Instance { get; private set; }
+
+        /// <summary>
+        /// Gets the instance of the widget that was created
+        /// </summary>
+        public Widget Source { get; private set; }
+
+		/// <summary>
+		/// Initializes a new instance of the WidgetCreatedArgs class
+		/// </summary>
+		/// <param name="instance">Instance of the widget that was created</param>
+        /// <param name="source">Instance of the widget that was cloned</param>
+        public WidgetClonedEventArgs(Widget instance, Widget source)
+		{
+			this.Instance = instance;
+            this.Source = source;
+		}
+	}
+    
 	/// <summary>
 	/// Arguments for when a widget is created
 	/// </summary>
@@ -140,6 +169,25 @@ namespace Eto
 			OnWidgetCreated(args);
 		}
 
+        /// <summary>
+		/// Event to handle when widgets are cloned by this platform
+		/// </summary>
+        public event EventHandler<WidgetClonedEventArgs> WidgetCloned;
+
+		/// <summary>
+        /// Handles the <see cref="WidgetCloned"/> event
+		/// </summary>
+		/// <param name="e">Arguments for the event</param>
+        protected virtual void OnWWidgetCloned(WidgetClonedEventArgs e)
+		{
+            if (WidgetCloned != null)
+                WidgetCloned(this, e);
+		}
+
+        internal void TriggerWidgetCloned(WidgetClonedEventArgs args)
+		{
+            OnWWidgetCloned(args);
+		}
 		#endregion
 
 		/// <summary>

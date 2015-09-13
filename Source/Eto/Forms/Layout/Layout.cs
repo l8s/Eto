@@ -55,14 +55,14 @@ namespace Eto.Forms
 		/// <summary>
 		/// Begins the initialization when loading from xaml or other code generated scenarios
 		/// </summary>
-		public virtual void BeginInit()
+		public override void BeginInit()
 		{
 		}
 
 		/// <summary>
 		/// Ends the initialization when loading from xaml or other code generated scenarios
 		/// </summary>
-		public virtual void EndInit()
+        public override void EndInit()
 		{
 		}
 

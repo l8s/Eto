@@ -14,7 +14,7 @@ namespace Eto.Forms
 	/// Grid column definition for a <see cref="Grid"/>
 	/// </summary>
 	[Handler(typeof(GridColumn.IHandler))]
-	public class GridColumn : Widget
+	public class GridColumn : BindableWidget
 	{
 		new IHandler Handler { get { return (IHandler)base.Handler; } }
 

@@ -112,6 +112,22 @@ namespace Eto.Forms
 			}
 		}
 
+        /// <summary>
+        /// Clones properties for this control
+        /// </summary>
+        protected override void CloneProperties(Widget widgetToClone)
+        {
+            base.CloneProperties(widgetToClone);
+
+            Panel panel = (Panel) widgetToClone;
+
+            Control content = panel.Handler.Content;
+            if (content != null)
+            {
+                Content = (Control)content.Clone();
+            }
+        }
+
 		/// <summary>
 		/// Handler interface fot the <see cref="Panel"/>
 		/// </summary>

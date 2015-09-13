@@ -44,6 +44,17 @@ namespace Eto.Forms
 			/// <value>The text font.</value>
 			Font Font { get; set; }
 		}
+
+        /// <summary>
+        /// Clones properties for this control
+        /// </summary>
+        protected override void CloneProperties(Widget widgetToClone)
+        {
+            base.CloneProperties(widgetToClone);
+
+            CommonControl control = (CommonControl)widgetToClone;
+            Font = control.Font;
+        }
 	}
 }
 

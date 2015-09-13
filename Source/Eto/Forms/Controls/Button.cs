@@ -77,7 +77,7 @@ namespace Eto.Forms
 		/// The <see cref="ICommand.CanExecute"/> will also used to set the enabled/disabled state of the button.
 		/// </remarks>
 		/// <value>The command to invoke.</value>
-		public ICommand Command
+		public virtual ICommand Command
 		{
 			get { return Properties.GetCommand(Command_Key); }
 			set { Properties.SetCommand(Command_Key, value, e => Enabled = e, r => Click += r, r => Click -= r); }
@@ -173,6 +173,20 @@ namespace Eto.Forms
 				widget.Platform.Invoke(() => widget.OnClick(e));
 			}
 		}
+
+        /// <summary>
+        /// Clones properties for this control
+        /// </summary>
+        protected override void CloneProperties(Widget widgetToClone)
+        {
+            base.CloneProperties(widgetToClone);
+
+            Button button = (Button)widgetToClone;
+            Image = button.Image;
+            ImagePosition = button.ImagePosition;
+
+            Properties.AddEvent(Click_Key, button.Properties.Get<EventHandler<EventArgs>>(Click_Key));
+        }
 
 		/// <summary>
 		/// Handler interface for the <see cref="Button"/> control

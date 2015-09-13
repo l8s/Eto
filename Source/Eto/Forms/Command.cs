@@ -272,9 +272,9 @@ namespace Eto.Forms
 		/// <summary>
 		/// Execute the command programatically.
 		/// </summary>
-		public void Execute()
+		public void Execute(object parameter)
 		{
-			OnExecuted(EventArgs.Empty);
+			OnExecuted(new CommandEventArgs(parameter));
 		}
 
 		/// <summary>
@@ -355,15 +355,11 @@ namespace Eto.Forms
 			remove { EnabledChanged -= new EventHandler<EventArgs>(value.Invoke); }
 		}
 
-		bool ICommand.CanExecute(object parameter)
+		public bool CanExecute(object parameter)
 		{ 
 			return Enabled;
 		}
-
-		void ICommand.Execute(object parameter)
-		{
-			Execute();
-		}
+		
 
 #region IBindable implementation
 

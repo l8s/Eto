@@ -65,7 +65,7 @@ namespace Eto
 	/// <copyright>(c) 2012-2014 by Curtis Wensley</copyright>
 	/// <license type="BSD-3">See LICENSE for full terms</license>
 	[RuntimeNameProperty("ID")]
-	public abstract class Widget : IHandlerSource, IDisposable, ICallbackSource
+    public abstract class Widget : IHandlerSource, IDisposable, ICallbackSource, ICloneable
 	{
 		IHandler WidgetHandler { get { return Handler as IHandler; } }
 
@@ -212,27 +212,57 @@ namespace Eto
 		}
 		#endif
 
-		/// <summary>
-		/// Initializes a new instance of the Widget class
-		/// </summary>
-		protected Widget()
-		{
-			var platform = Platform.Instance;
-			if (platform == null)
-				throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Platform instance is null. Have you created your application?"));
-			var info = platform.FindHandler(GetType());
-			if (info == null)
-				throw new ArgumentOutOfRangeException(string.Format(CultureInfo.CurrentCulture, "Type for '{0}' could not be found in this platform", GetType().FullName));
-			Handler = info.Instantiator();
-			Platform = platform;
-			var widgetHandler = this.Handler as IHandler;
-			if (widgetHandler != null)
-			{
-				widgetHandler.Widget = this;
-			}
-			if (info.Initialize)
-				Initialize();
-		}
+        private void InitializeHandler()
+        {
+            var platform = Platform.Instance;
+            if (platform == null)
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Platform instance is null. Have you created your application?"));
+            var info = platform.FindHandler(GetType());
+            if (info == null)
+                throw new ArgumentOutOfRangeException(string.Format(CultureInfo.CurrentCulture, "Type for '{0}' could not be found in this platform", GetType().FullName));
+            Handler = info.Instantiator();
+            Platform = platform;
+            var widgetHandler = this.Handler as IHandler;
+            if (widgetHandler != null)
+            {
+                widgetHandler.Widget = this;
+            }
+            if (info.Initialize)
+                Initialize();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Widget class
+        /// </summary>
+        protected Widget()
+        {
+            InitializeHandler();
+        }
+
+        /// <summary>
+        /// Clones this control
+        /// </summary>
+        public object Clone()
+        {
+            Widget widget = (Widget) Activator.CreateInstance(GetType());
+            widget.InitializeHandler();
+            widget.CloneProperties(this);
+            Platform.Instance.TriggerWidgetCloned(new WidgetClonedEventArgs(widget, this));
+            return widget;
+        }
+
+        /// <summary>
+        /// Clones properties for this widget
+        /// </summary>
+        protected virtual void CloneProperties(Widget widgetToClone)
+        {
+            ID = widgetToClone.ID;      // Copy / Clone ?
+            string style = widgetToClone.Style;
+            if (string.IsNullOrEmpty(style) == false)
+            {
+                Style = style;
+            }
+        }
 
 		/// <summary>
 		/// Initializes a new instance of the Widget class

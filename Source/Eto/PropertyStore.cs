@@ -45,6 +45,7 @@ namespace Eto
 		/// <param name="defaultValue">Value to return when the specified property is not found in the dictionary</param>
 		/// <typeparam name="T">The type of property to get.</typeparam>
 		/// <returns>Value of the property with the given key, or <paramref name="defaultValue"/> if not found</returns>
+		/// \todo: instead of returning defaultValue, should we look into Parent PropertyStore until we find it (if not then return defaultValue)?
 		public T Get<T>(object key, T defaultValue = default(T))
 		{
 			object value;
@@ -93,6 +94,36 @@ namespace Eto
 			}
 			return (T)value;
 		}
+
+        /// <summary>
+        /// Gets a value from the property store with the specified key of a concrete type, and creates a new instance if it doesn't exist yet.
+        /// </summary>
+        /// <param name="type">Type type of property to get.</param>
+        /// <param name="key">Key of the property to get</param>
+        /// <returns>Value of the property with the given key, or a new instance if not already added</returns>
+        public object Create(Type type, object key)
+        {
+            object value;
+            if (!TryGetValue(key, out value))
+            {
+                value = Activator.CreateInstance(type);
+                Add(key, value);
+            }
+            return value;
+        }
+
+        /// <summary>
+        /// Gets a value from the property store with the specified key of a concrete type
+        /// </summary>
+        /// <param name="key">Key of the property to get</param>
+        /// <param name="defaultValue">Value to return when the specified property is not found in the dictionary</param>
+        /// <returns>Value of the property with the given key, or <paramref name="defaultValue"/> if not found</returns>
+        /// \todo: instead of returning defaultValue, should we look into Parent PropertyStore until we find it (if not then return defaultValue)?
+        public object Get(object key, object defaultValue)
+        {
+            object value;
+            return TryGetValue(key, out value) ? value : defaultValue;
+        }
 
 		/// <summary>
 		/// Adds a generic event delegate with the specified key
@@ -343,10 +374,13 @@ namespace Eto
 		{
 			readonly Action<EventHandler<EventArgs>> removeExecute;
 			readonly Action<bool> setEnabled;
-			public ICommand Command { get; set; }
 
-			public CommandWrapper(ICommand command, Action<bool> setEnabled, Action<EventHandler<EventArgs>> addExecute, Action<EventHandler<EventArgs>> removeExecute)
+			public ICommandSource Source { get; set; }
+            public ICommand Command { get; set; }
+
+			public CommandWrapper(object source, ICommand command, Action<bool> setEnabled, Action<EventHandler<EventArgs>> addExecute, Action<EventHandler<EventArgs>> removeExecute)
 			{
+                this.Source = source as ICommandSource;
 				this.Command = command;
 				this.setEnabled = setEnabled;
 				this.removeExecute = removeExecute;
@@ -363,7 +397,7 @@ namespace Eto
 
 			void Command_Execute(object sender, EventArgs e)
 			{
-				Command.Execute(null);
+                Command.Execute(Source != null ? Source.CommandParameter : null);
 			}
 
 			void Command_CanExecuteChanged(object sender, EventArgs e)
@@ -396,7 +430,7 @@ namespace Eto
 					return;
 				cmd.Unregister();
 			}
-			Set(key, value != null ? new CommandWrapper(value, setEnabled, addExecute, removeExecute) : null);
+			Set(key, value != null ? new CommandWrapper(Parent, value, setEnabled, addExecute, removeExecute) : null);
 		}
 
 		/// <summary>

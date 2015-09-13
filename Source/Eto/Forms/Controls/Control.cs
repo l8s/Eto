@@ -18,7 +18,7 @@ namespace Eto.Forms
 	[DesignTimeVisible(true)]
 	[DesignerCategory("Eto.Forms")]
 	#endif
-	public partial class Control : BindableWidget, IMouseInputSource, IKeyboardInputSource, ICallbackSource
+    public partial class Control : BindableWidget, IMouseInputSource, IKeyboardInputSource, ICallbackSource, ISupportInitialize
 	{
 		new IHandler Handler { get { return (IHandler)base.Handler; } }
 
@@ -1006,6 +1006,43 @@ namespace Eto.Forms
 		{
 			return new Label { Text = labelText };
 		}
+
+        /// <summary>
+        /// Clones properties for this control
+        /// </summary>
+        protected override void CloneProperties(Widget widgetToClone)
+        {
+            base.CloneProperties(widgetToClone);
+
+            Control control = (Control)widgetToClone;
+            BackgroundColor = control.BackgroundColor;
+            Size = control.Size;
+            Enabled = control.Enabled;
+            Visible = control.Visible;
+
+            object tag = control.Tag;
+            if (tag != null)
+            {
+                Tag = tag;      // SHould it be cloned?
+                throw new NotImplementedException();
+            }
+
+            // \todo: Generic way to clone bindings?
+        }
+
+        /// <summary>
+        /// Begins the initialization when loading from xaml or other code generated scenarios
+        /// </summary>
+        public virtual void BeginInit()
+        {
+        }
+
+        /// <summary>
+        /// Ends the initialization when loading from xaml or other code generated scenarios
+        /// </summary>
+        public virtual void EndInit()
+        {
+        }
 
 		#region Callback
 

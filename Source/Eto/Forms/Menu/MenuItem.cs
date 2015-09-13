@@ -65,7 +65,7 @@ namespace Eto.Forms
 		/// The <see cref="ICommand.CanExecute"/> will also used to set the enabled/disabled state of the menu item.
 		/// </remarks>
 		/// <value>The command to invoke.</value>
-		public ICommand Command
+        public virtual ICommand Command
 		{
 			get { return Properties.GetCommand(Command_Key); }
 			set { Properties.SetCommand(Command_Key, value, e => Enabled = e, r => Click += r, r => Click -= r); }
@@ -152,7 +152,7 @@ namespace Eto.Forms
 		/// Gets or sets the text of the menu item, with mnemonics identified with &amp;.
 		/// </summary>
 		/// <value>The text with mnemonic of the menu item.</value>
-		public string Text
+		public virtual string Text
 		{
 			get { return Handler.Text; }
 			set { Handler.Text = value; }

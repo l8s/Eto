@@ -55,7 +55,7 @@ namespace Eto.Forms
 		/// Gets or sets the title text of the page.
 		/// </summary>
 		/// <value>The title text.</value>
-		public string Text
+		public virtual string Text
 		{
 			get { return Handler.Text; }
 			set { Handler.Text = value; }
