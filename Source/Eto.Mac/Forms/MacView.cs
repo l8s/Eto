@@ -727,7 +727,7 @@ namespace Eto.Mac.Forms
 				{
 					if (command != null)
 					{
-						command.Execute();
+						command.Execute(null);
 						return;
 					}
 				}

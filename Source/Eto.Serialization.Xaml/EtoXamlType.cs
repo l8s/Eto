@@ -71,7 +71,7 @@ namespace Eto.Serialization.Xaml
 
 		protected override XamlType LookupItemType()
 		{
-			if (EtoEnvironment.Platform.IsMono)
+			if (Xaml.IsMono)
 			{
 				// mono doesn't use SchemaContext.GetXamlType here, which we need to override the type converter.
 				var underlyingType = UnderlyingType;
@@ -184,14 +184,46 @@ namespace Eto.Serialization.Xaml
 			if (directive == XamlLanguage.Name)
 			{
 				// mono doesn't support the name attribute yet (throws null exception)
-				if (!EtoEnvironment.Platform.IsMono)
+                if (!Xaml.IsMono)
 				{
 					var nameAttribute = GetCustomAttribute<RuntimeNamePropertyAttribute>();
 					if (nameAttribute != null && nameAttribute.Name != null)
 						return GetMember(nameAttribute.Name);
 				}
+
+                // Remap Name to ID property if present
+                XamlMember member = GetMember("ID");
+                if (member != null)
+                    return member; 
 			}
 			return base.LookupAliasedProperty(directive);
 		}
+
+        protected override XamlMember LookupAttachableMember(string name)
+        {
+            XamlMember mbr = base.LookupAttachableMember(name);
+
+            if (mbr == null)
+            {
+                mbr = GetMember(name);
+            }
+            return mbr;
+        }
+
+        //protected override XamlType LookupKeyType()
+        //{
+        //    return base.LookupKeyType();
+        //}
+
+        //protected override XamlType LookupMarkupExtensionReturnType()
+        //{
+        //    return base.LookupMarkupExtensionReturnType();
+        //}
+
+        //protected override XamlMember LookupMember(string name, bool skipReadOnlyCheck)
+        //{
+        //    XamlMember mbr = base.LookupMember(name, skipReadOnlyCheck);
+        //    return mbr;
+        //}
 	}
 }

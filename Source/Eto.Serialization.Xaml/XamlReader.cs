@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 #if !PCL
+using System.Windows.Markup;
 using System.Xaml;
 #endif
 
@@ -126,8 +127,8 @@ namespace Eto.Serialization.Xaml
 					var obj = e.Instance as Widget;
 					if (obj != null && !string.IsNullOrEmpty(obj.ID))
 					{
-						var property = instanceType.GetProperty(obj.ID, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-						if (property != null)
+                        var property = instanceType.GetProperty(obj.ID, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+                        if (property != null)
 							property.SetValue(writerSettings.RootObjectInstance, obj, null);
 						else
 						{

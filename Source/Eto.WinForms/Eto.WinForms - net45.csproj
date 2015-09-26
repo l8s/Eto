@@ -77,6 +77,7 @@
     </Compile>
     <Compile Include="BubbleEventFilter.cs" />
     <Compile Include="Drawing\RadialGradientBrushHandler.cs" />
+    <Compile Include="Forms\Cells\ButtonCellHandler.cs" />
     <Compile Include="WinConversions.cs" />
     <Compile Include="CustomControls\ExtendedDateTimePicker.cs">
       <SubType>Component</SubType>
@@ -100,7 +101,9 @@
     <Compile Include="Forms\Controls\ComboBoxHandler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Forms\Controls\DropDownHandler.cs" />
+    <Compile Include="Forms\Controls\DropDownHandler.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\Controls\GridHandler.cs" />
     <Compile Include="Forms\Controls\GridColumnHandler.cs" />
     <Compile Include="Forms\Controls\PasswordBoxHandler.cs" />
@@ -230,10 +233,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Forms\Controls\TextAreaHandler.cs">
-      <SubType>Code</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\Controls\TextBoxHandler.cs">
-      <SubType>Code</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\Menu\CheckMenuItemHandler.cs">
       <SubType>Code</SubType>
@@ -358,13 +361,13 @@
   <Import Project="$(ProjectDir)\..\.nuget\NuGet.targets" Condition="Exists('$(ProjectDir)\..\.nuget\NuGet.targets')" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets') And '0' == '1'" />
   <ItemGroup>
-    <ProjectReference Include="..\Eto\Eto - pcl.csproj">
-      <Project>{35EF0A4E-2A1A-492C-8BED-106774EA09F2}</Project>
-      <Name>Eto - pcl</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="CustomControls\CalendarPicker.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CustomControls\CalendarPicker.png" />
+    <ProjectReference Include="..\Eto\Eto.csproj">
+      <Project>{16289d2f-044c-49ef-83e9-9391aff8fd2b}</Project>
+      <Name>Eto</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="../Shared/Build.targets" />
 </Project>
