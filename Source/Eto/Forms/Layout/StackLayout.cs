@@ -53,34 +53,11 @@ namespace Eto.Forms
 		Stretch
 	}
 
-    class StackLayoutItemConverter : TypeConverter
-    {
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-        {
-            return false;
-        }
-
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            return typeof(Control).IsAssignableFrom(sourceType);
-        }
-
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            throw new NotSupportedException();
-        }
-
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            return new StackLayoutItem { Control = value as Control };
-        }
-    }
-
 	/// <summary>
 	/// Item for a single control in a <see cref="StackLayout"/>.
 	/// </summary>
 	[ContentProperty("Control")]
-    [TypeConverter(typeof(StackLayoutItemConverter))]
+	[TypeConverter(typeof(StackLayoutItemConverter))]
 	public class StackLayoutItem
 	{
 		/// <summary>

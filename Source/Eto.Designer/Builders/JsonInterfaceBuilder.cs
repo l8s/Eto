@@ -25,38 +25,8 @@ namespace Eto.Designer.Builders
 			}
 			catch (Exception ex)
 			{
-				error(ex.ToString());
+				error(ex.Message);
 			}
-		}
-
-		public string GetSample()
-		{
-			return @"{
-	$type: ""Scrollable"",
-	Content: {
-		$type: ""TableLayout"",
-		Padding : ""10"",
-		Spacing: ""5, 5"",
-		Rows: [
-			{
-				Spacing: ""5, 5"",
-				Rows: [
-					[ { $type: ""Label"", Text: ""TextBox"" }, { $type: ""TextBox"" } ],
-					[ { $type: ""Label"", Text: ""TextArea"" }, { $type: ""TextArea"" } ],
-					[ { }, { $type: ""CheckBox"", Text: ""Some check box"" } ],
-					[ { }, { $type: ""Slider"" } ]
-				]
-			},
-			{
-				Spacing: ""5, 5"",
-				Rows: [
-					[ null, { $type: ""Button"", Text: ""Cancel"" }, { $type: ""Button"", Text: ""Apply"" } ]
-				]
-			},
-			null	
-		]
-	}
-}";
 		}
 	}
 }
